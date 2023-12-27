@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sizer/sizer.dart';
-import 'package:task_chatgpt_app/home.dart';
-import 'package:task_chatgpt_app/shared_colors.dart';
-import 'package:task_chatgpt_app/shared_preferences.dart';
+import 'package:task_chatgpt_app/layout/home.dart';
+import 'package:task_chatgpt_app/shared/colors/shared_colors.dart';
+import 'package:task_chatgpt_app/shared/cach_helper/shared_preferences.dart';
 
 
 
@@ -73,7 +73,7 @@ class _OnBoardingState extends State<OnBoarding> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: color1,
+      backgroundColor: mainColor,
 
       body: Padding(
         padding: const EdgeInsets.only(
@@ -106,7 +106,7 @@ class _OnBoardingState extends State<OnBoarding> {
                       fontFamily: 'Raleway',
                       fontSize: 22.sp,
                       fontWeight: FontWeight.w700,
-                      color: color2
+                      color: white
 
                   ),
 
@@ -116,7 +116,7 @@ class _OnBoardingState extends State<OnBoarding> {
                       fontFamily: 'Raleway',
                       fontSize: 22.sp,
                       fontWeight: FontWeight.w700,
-                      color: color2
+                      color: white
 
                   ),
 
@@ -130,7 +130,7 @@ class _OnBoardingState extends State<OnBoarding> {
                       fontFamily: 'Raleway',
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w600,
-                      color: color2
+                      color: white
 
                   ),
 
@@ -168,7 +168,7 @@ class _OnBoardingState extends State<OnBoarding> {
                   height: MediaQuery.of(context).size.height*0.05,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: color3
+                    color: buttonAndUserChatColor
                   ),
 
                   child: MaterialButton(
@@ -193,7 +193,7 @@ class _OnBoardingState extends State<OnBoarding> {
                               fontFamily: 'Raleway',
                               fontSize: 13.sp,
                               fontWeight: FontWeight.w600,
-                              color: color2
+                              color: white
 
                           ),
 
@@ -205,7 +205,7 @@ class _OnBoardingState extends State<OnBoarding> {
 
                         Icon(
                           Icons.arrow_forward,
-                          color: color2,
+                          color: white,
                           size: 16.0,
                         ),
                       ],
@@ -215,7 +215,7 @@ class _OnBoardingState extends State<OnBoarding> {
                           fontFamily: 'Raleway',
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w600,
-                          color: color2
+                          color: white
 
                       ),
 
@@ -230,132 +230,134 @@ class _OnBoardingState extends State<OnBoarding> {
     );
   }
 
-  Widget onBoarding(Swiping wid, int index) => Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Image.asset(
-        '${wid.image}',
-        width: 6.w,
-        height: 6.h,
-
-      ),
-      Text('${wid.text1}',
-
-        style: TextStyle(
-            fontFamily: 'Raleway',
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w600,
-            color: color2
+  Widget onBoarding(Swiping wid, int index) => SingleChildScrollView(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          '${wid.image}',
+          width: 6.w,
+          height: 6.h,
 
         ),
+        Text('${wid.text1}',
 
-      ),
-      SizedBox(
-        height: 4.h,
-      ),
-      Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height*0.1,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: color2.withOpacity(0.2)
-        ),
-        padding: EdgeInsets.all(20.0),
-        child: Text(
-          '${wid.text2}',
-          //      'I have developed meaningful relationships with individuals of all ages, including seven-year-old Hillary. Many of my mentees come from disadvantaged backgrounds',
-          textAlign: TextAlign.center,
           style: TextStyle(
               fontFamily: 'Raleway',
-              fontSize: 12.sp,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w600,
-              color: color2
+              color: white
 
           ),
-        ),
-      ),
-      SizedBox(
-        height: 2.h,
-      ),
-      Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height*0.1,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: color2.withOpacity(0.2)
-        ),
-        padding: EdgeInsets.all(20.0),
-        child: Text(
-          '${wid.text3}',
-          //      'I have developed meaningful relationships with individuals of all ages, including seven-year-old Hillary. Many of my mentees come from disadvantaged backgrounds',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontFamily: 'Raleway',
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w600,
-              color: color2
 
+        ),
+        SizedBox(
+          height: 4.h,
+        ),
+        Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height*0.1,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: white.withOpacity(0.2)
+          ),
+          padding: EdgeInsets.all(20.0),
+          child: Text(
+            '${wid.text2}',
+            //      'I have developed meaningful relationships with individuals of all ages, including seven-year-old Hillary. Many of my mentees come from disadvantaged backgrounds',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontFamily: 'Raleway',
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600,
+                color: white
+
+            ),
           ),
         ),
-      ),
-      SizedBox(
-        height: 2.h,
-      ),
-      Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height*0.1,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: color2.withOpacity(0.2)
+        SizedBox(
+          height: 2.h,
         ),
-        padding: EdgeInsets.all(20.0),
-        child: Text(
-          '${wid.text4}',
-          //      'I have developed meaningful relationships with individuals of all ages, including seven-year-old Hillary. Many of my mentees come from disadvantaged backgrounds',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontFamily: 'Raleway',
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w600,
-              color: color2
+        Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height*0.1,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: white.withOpacity(0.2)
+          ),
+          padding: EdgeInsets.all(20.0),
+          child: Text(
+            '${wid.text3}',
+            //      'I have developed meaningful relationships with individuals of all ages, including seven-year-old Hillary. Many of my mentees come from disadvantaged backgrounds',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontFamily: 'Raleway',
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600,
+                color: white
 
+            ),
           ),
         ),
-      ),
+        SizedBox(
+          height: 2.h,
+        ),
+        Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height*0.1,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: white.withOpacity(0.2)
+          ),
+          padding: EdgeInsets.all(20.0),
+          child: Text(
+            '${wid.text4}',
+            //      'I have developed meaningful relationships with individuals of all ages, including seven-year-old Hillary. Many of my mentees come from disadvantaged backgrounds',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontFamily: 'Raleway',
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600,
+                color: white
+
+            ),
+          ),
+        ),
 
 
-      SizedBox(
-        height: 4.h,
-      ),
+        SizedBox(
+          height: 4.h,
+        ),
 
 
-       Row(
-         mainAxisAlignment: MainAxisAlignment.center,
-         children: [
-           Container(
-             width: MediaQuery.of(context).size.width*0.08,
-             height: MediaQuery.of(context).size.height*0.002,
-             color: index == 0 ? color3 : color2,
-           ),
-           SizedBox(
-             width: 3.w,
-           ),
-           Container(
-             width: MediaQuery.of(context).size.width*0.08,
-             height: MediaQuery.of(context).size.height*0.002,
-             color: index == 1 ? color3 :color2,
-           ),
-           SizedBox(
-             width: 3.w,
-           ),
-           Container(
-             width: MediaQuery.of(context).size.width*0.08,
-             height: MediaQuery.of(context).size.height*0.002,
-             color: index == 2 ? color3 :color2,
-           ),
-         ],
-       ),
+         Row(
+           mainAxisAlignment: MainAxisAlignment.center,
+           children: [
+             Container(
+               width: MediaQuery.of(context).size.width*0.08,
+               height: MediaQuery.of(context).size.height*0.002,
+               color: index == 0 ? buttonAndUserChatColor : white,
+             ),
+             SizedBox(
+               width: 3.w,
+             ),
+             Container(
+               width: MediaQuery.of(context).size.width*0.08,
+               height: MediaQuery.of(context).size.height*0.002,
+               color: index == 1 ? buttonAndUserChatColor :white,
+             ),
+             SizedBox(
+               width: 3.w,
+             ),
+             Container(
+               width: MediaQuery.of(context).size.width*0.08,
+               height: MediaQuery.of(context).size.height*0.002,
+               color: index == 2 ? buttonAndUserChatColor :white,
+             ),
+           ],
+         ),
 
-    ],
+      ],
+    ),
   );
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sizer/sizer.dart';
-import 'package:task_chatgpt_app/shared_colors.dart';
+import 'package:task_chatgpt_app/shared/colors/shared_colors.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget {
           });
         }
         return Scaffold(
-          backgroundColor:color1,
+          backgroundColor:mainColor,
           body: SizedBox(
             width: double.infinity,
             height: MediaQuery.of(context).size.height,
@@ -34,7 +34,7 @@ class SplashScreen extends StatelessWidget {
                       fontFamily: 'Raleway',
                       fontSize: 30.sp,
                       fontWeight: FontWeight.w700,
-                      color: color2
+                      color: white
 
                   ),
                 ),

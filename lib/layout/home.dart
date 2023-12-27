@@ -1,18 +1,92 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:sizer/sizer.dart';
-import 'package:task_chatgpt_app/shared_colors.dart';
-import 'package:task_chatgpt_app/splash_screen.dart';
 
-class HomePage extends StatelessWidget {
+import 'package:sizer/sizer.dart';
+import 'package:task_chatgpt_app/shared/colors/shared_colors.dart';
+import 'package:task_chatgpt_app/layout/splash_screen.dart';
+
+import '../chat_pages/chat.dart';
+import '../shared/database/database.dart';
+import '../chat_pages/generated_chat.dart';
+
+class HomePage extends StatefulWidget {
+
+
+
+
+
+
+
+
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+
+
+
+
+
+  late DatabaseHelper _databaseHelper;
+
+  String newChatButtonText = 'loading...'; // Initialize with default text
+
+  bool clicked = false ;
+
+  @override
+  void initState() {
+    super.initState();
+    _databaseHelper = DatabaseHelper.instance;
+    _fetchMessagesFromDatabase(context); // Pass the context to the method
+  }
+
+  Future<void> _fetchMessagesFromDatabase(BuildContext context) async {
+    try {
+      List<Map<String, dynamic>> messages = await _databaseHelper.getMessages();
+      print('Messages from the database: $messages');
+
+      // Extract the last user message
+      String lastUserMessage = getLastUserMessage(messages);
+
+      // Update the button text
+      setState(() {
+        newChatButtonText = lastUserMessage.isNotEmpty ? lastUserMessage : 'Loading...';
+      });
+
+      // Navigate to DataPage with the retrieved messages
+
+      if(clicked) {Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => GeneratedChat(databaseMessages: messages)),
+      ) ;}
+    } catch (e) {
+      print('Error fetching messages from the database: $e');
+    }
+  }
+
+
+  String getLastUserMessage(List<Map<String, dynamic>> messages) {
+    for (int i = messages.length - 1; i >= 0; i--) {
+      if (messages[i]['messageType'] == 'user') {
+        return messages[i]['text'];
+      }
+    }
+    return ''; // Return an empty string if no user message is found
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor:color4,
+        backgroundColor:homePageColor,
         body: SizedBox(
           width: double.infinity,
-          height: MediaQuery.of(context).size.height,
+
           child: Column(
 
             children: [
@@ -29,11 +103,17 @@ class HomePage extends StatelessWidget {
                      width: double.infinity,
 
                      child: MaterialButton(
-                       onPressed: (){},
+                       onPressed: (){
+
+                         Navigator.push(
+                           context,
+                           MaterialPageRoute(builder: (context) => ChatPage()),
+                         ) ;
+                       },
                        child: Row(
                          children: [
                            Icon(Icons.chat_bubble_outline,
-                             color: color2,
+                             color: white,
                              size: 20,
                            ),
                            SizedBox(
@@ -44,12 +124,12 @@ class HomePage extends StatelessWidget {
                                  fontFamily: 'Raleway',
                                  fontSize: 12.sp,
                                  fontWeight: FontWeight.w700,
-                                 color: color2
+                                 color: white
 
                              ),),
                            Spacer(),
                            Icon(Icons.arrow_forward_ios,
-                             color: color2,
+                             color: white,
                              size: 20,
                            )
                          ],
@@ -66,7 +146,7 @@ class HomePage extends StatelessWidget {
                    child: Container(
                      width: double.infinity,
                      height: MediaQuery.of(context).size.height*0.0005 ,
-                     color: color2,
+                     color: white,
                    ),
                  ),
                ],
@@ -74,65 +154,79 @@ class HomePage extends StatelessWidget {
              SizedBox(
                height: 1.h,
              ),
-             SizedBox(
-               width: double.infinity,
-               height: MediaQuery.of(context).size.height*0.5,
-               child: Column(
-                 children: [
-                   Padding(
-                     padding: EdgeInsets.only(top: 10.0),
-                     child: Container(
-                       width: double.infinity,
+              newChatButtonText != "Loading..." ?Expanded(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: Container(
+                        width: double.infinity,
 
-                       child: MaterialButton(
-                         onPressed: (){},
-                         child: Row(
-                           children: [
-                             Icon(Icons.chat_bubble_outline,
-                               color: color2.withOpacity(0.6),
-                               size: 20,
-                             ),
-                             SizedBox(
-                               width: 4.w,
-                             ),
-                             Text('New Chat',
-                               style: TextStyle(
-                                   fontFamily: 'Raleway',
-                                   fontSize: 12.sp,
-                                   fontWeight: FontWeight.w500,
-                                   color: color2
+                        child: MaterialButton(
+                          onPressed: (){
+                            setState(() {
+                              clicked = true;
+                              _fetchMessagesFromDatabase(context);
+                            });
 
-                               ),),
-                             Spacer(),
-                             Icon(Icons.arrow_forward_ios,
-                               color: color2.withOpacity(0.6),
-                               size: 20,
-                             )
-                           ],
-                         ),
 
-                       ),
-                     ),
-                   ),
-                   Padding(
-                     padding: EdgeInsetsDirectional.only(
-                       start: 20,
-                       end: 20,
-                     ),
-                     child: Container(
-                       width: double.infinity,
-                       height: MediaQuery.of(context).size.height*0.0005,
-                       color: color2,
-                     ),
-                   ),
-                 ],
-               ),
-             ),
+
+
+                          },
+                          child: Row(
+                            children: [
+                              Icon(Icons.chat_bubble_outline,
+                                color: white.withOpacity(0.6),
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 4.w,
+                              ),
+                              Expanded(
+                                child: Text(newChatButtonText,
+                                  style: TextStyle(
+                                      fontFamily: 'Raleway',
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: white
+
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios,
+                                color: white.withOpacity(0.6),
+                                size: 20,
+                              )
+                            ],
+                          ),
+
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        start: 20,
+                        end: 20,
+                      ),
+                      child: Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height*0.0005,
+                        color: white,
+                      ),
+                    ),
+                  ],
+                ),
+              ):Expanded(
+                child: SizedBox(),
+              ),
 
               Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height*0.001 ,
-                color: color2,
+                color: white,
               ),
               Padding(
                 padding: EdgeInsets.only(top: 10.0),
@@ -140,11 +234,19 @@ class HomePage extends StatelessWidget {
                   width: double.infinity,
 
                   child: MaterialButton(
-                    onPressed: (){},
+                    onPressed: () async {
+                      await DatabaseHelper.instance.deleteDatabase();
+                       // Navigate to a new instance of HomePage to rebuild the page
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
+
+                    },
                     child: Row(
                       children: [
                         Icon(Icons.delete_outline,
-                          color: color2.withOpacity(0.6),
+                          color: white.withOpacity(0.6),
                           size: 20,
                         ),
                         SizedBox(
@@ -155,7 +257,7 @@ class HomePage extends StatelessWidget {
                               fontFamily: 'Raleway',
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w500,
-                              color: color2
+                              color: white
 
                           ),),
 
@@ -175,7 +277,7 @@ class HomePage extends StatelessWidget {
                     child: Row(
                       children: [
                         Icon(Icons.person_outline,
-                          color: color2.withOpacity(0.6),
+                          color: white.withOpacity(0.6),
                           size: 20,
                         ),
                         SizedBox(
@@ -186,7 +288,7 @@ class HomePage extends StatelessWidget {
                               fontFamily: 'Raleway',
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w500,
-                              color: color2
+                              color: white
 
                           ),),
                         Spacer(),
@@ -195,14 +297,14 @@ class HomePage extends StatelessWidget {
                          height: MediaQuery.of(context).size.height*0.028,
                          decoration: BoxDecoration(
                            borderRadius: BorderRadius.circular(8),
-                           color: color2,
+                           color: white,
                          ),
                          child: Text('NEW',
                            style: TextStyle(
                                fontFamily: 'Raleway',
                                fontSize: 12.sp,
                                fontWeight: FontWeight.w600,
-                               color: color3
+                               color: buttonAndUserChatColor
 
                            ),
                          textAlign: TextAlign.center,
@@ -224,7 +326,7 @@ class HomePage extends StatelessWidget {
                     child: Row(
                       children: [
                         Icon(Icons.light_mode_outlined,
-                          color: color2.withOpacity(0.6),
+                          color: white.withOpacity(0.6),
                           size: 20,
                         ),
                         SizedBox(
@@ -235,7 +337,7 @@ class HomePage extends StatelessWidget {
                               fontFamily: 'Raleway',
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w500,
-                              color: color2
+                              color: white
 
                           ),),
 
@@ -255,7 +357,7 @@ class HomePage extends StatelessWidget {
                     child: Row(
                       children: [
                         Icon(Icons.update,
-                          color: color2.withOpacity(0.6),
+                          color: white.withOpacity(0.6),
                           size: 20,
                         ),
                         SizedBox(
@@ -266,7 +368,7 @@ class HomePage extends StatelessWidget {
                               fontFamily: 'Raleway',
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w500,
-                              color: color2
+                              color: white
 
                           ),),
 
