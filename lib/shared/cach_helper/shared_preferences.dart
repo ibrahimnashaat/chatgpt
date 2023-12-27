@@ -1,4 +1,3 @@
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class cachHelper {
@@ -20,7 +19,7 @@ class cachHelper {
   }
 
   ///ده كود ال get data  فى ال sharedpefrance
-  static dynamic getData({ required String key }) {
+  static dynamic getData({required String key}) {
     return sharedPreferences!.get(key);
   }
 
@@ -42,5 +41,4 @@ class cachHelper {
   }) {
     return sharedPreferences?.getBool(key);
   }
-
 }

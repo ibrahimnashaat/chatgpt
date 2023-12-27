@@ -23,7 +23,6 @@ class DatabaseHelper {
       onCreate: _createDb,
       onUpgrade: (Database db, int oldVersion, int newVersion) async {
         print('Upgrading database from version $oldVersion to $newVersion');
-        // Perform database schema upgrades here if needed
       },
       onOpen: (Database db) async {
         print('Database opened');
@@ -46,22 +45,23 @@ class DatabaseHelper {
     }
   }
 
-  // Delete the database
   Future<void> deleteDatabase() async {
     String path = join(await getDatabasesPath(), 'chat_database.db');
     await databaseFactory.deleteDatabase(path);
     _database = null;
     print('Database deleted');
   }
+
   Future<int> insertMessage(String text, String messageType) async {
     Database db = await instance.database;
     try {
-      int result = await db.insert('chat_messages', {'text': text, 'messageType': messageType});
+      int result = await db
+          .insert('chat_messages', {'text': text, 'messageType': messageType});
       print('Inserted message: $result');
       return result;
     } catch (e) {
       print('Error inserting message: $e');
-      return -1; // or any other value to indicate an error
+      return -1;
     }
   }
 
